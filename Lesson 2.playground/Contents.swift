@@ -1,6 +1,13 @@
 import SwiftUI
 import PlaygroundSupport
 
+struct Word {
+    let word: String
+    let defintion: String
+}
+
+let words = [Word(word: "寝る", defintion: "to sleep")]
+
 struct ContentView: View {
     var body: some View {
         CardView()
@@ -24,13 +31,13 @@ struct CardView: View {
 
 struct WordView: View {
     var body: some View {
-        Text("寝る")
+        Text(words[0].word)
     }
 }
 
 struct DefinitionView: View {
     var body: some View {
-        Text("to sleep")
+        Text(words[0].defintion)
     }
 }
 
