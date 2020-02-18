@@ -14,6 +14,6 @@ struct WordListView: View {
         List(words, id: \.id) { word in
             WordRow(word: word)
         }
-        .navigationBarTitle(name)
+        .navigationBarTitle("List of Words", displayMode: .inline)
     }
 }

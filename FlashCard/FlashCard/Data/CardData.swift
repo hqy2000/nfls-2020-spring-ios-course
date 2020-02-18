@@ -14,7 +14,7 @@ public class CardData: ObservableObject {
     let synthesizer = AVSpeechSynthesizer()
     @Published var word = ""
     @Published var definition = ""
-    @Published var passed = false
+    @Published var percentage = 0.0
     @Published var isCompleted = false {
         didSet {
             if !isCompleted {
@@ -35,6 +35,7 @@ public class CardData: ObservableObject {
         didSet {
             self.word = current.word
             self.definition = current.defintion
+            self.percentage = Double(self.index + 1) / Double(words.count)
             
             // Speak aloud!
             let utterance = AVSpeechUtterance(string: self.word)

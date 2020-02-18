@@ -28,32 +28,53 @@ struct CardView: View {
     
     var body: some View {
         VStack {
-             WordView()
-                .environmentObject(self.card)
-                .onTapGesture {
-                    self.card.showBackSide.toggle()
+            if !card.isCompleted {
+                WordView()
+                    .environmentObject(self.card)
+                    .onTapGesture {
+                        self.card.showBackSide.toggle()
+                    }
+                    .offset(self.dragOffset)
+                    .opacity(self.isVisible ? 1.0: 0.0)
+                    .animation(Animation.linear(duration: 0.1))
+                    .gesture(
+                        DragGesture().onChanged({ (value) in
+                            self.dragOffset = value.translation
+                        }).onEnded({ (value) in
+                            if (abs(value.predictedEndTranslation.width) > 400) {
+                                self.dragOffset = value.predictedEndTranslation
+                                self.isVisible.toggle()
+                            } else {
+                                self.dragOffset = .zero
+                            }
+                            
+                        })
+                    )
+                    .padding(60.0)
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.gray)
+                        .frame(width: 310, height: 20)
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.blue)
+                        .frame(width: CGFloat(310.0 * card.percentage), height: 20.0)
+                        .animation(.easeInOut)
                 }
-                .offset(self.dragOffset)
-                .opacity(self.isVisible ? 1.0: 0.0)
-                .animation(Animation.linear(duration: 0.1))
-                .gesture(
-                    DragGesture().onChanged({ (value) in
-                        self.dragOffset = value.translation
-                    }).onEnded({ (value) in
-                        if (abs(value.predictedEndTranslation.width) > 400) {
-                            self.dragOffset = value.predictedEndTranslation
-                            self.isVisible.toggle()
-                        } else {
-                            self.dragOffset = .zero
-                        }
-                        
-                    })
-                )
-                .padding(40.0)
-            NavigationLink(destination: WordListView()) {
-                Text("Check Full List")
+                    .padding(10.0)
+                NavigationLink(destination: WordListView()) {
+                    Text("Check Full List")
+                }
+            } else {
+                Text("Completed!")
+                   .font(.title)
+                   .padding()
+                Button(action: {
+                    self.card.isCompleted = false
+                }) {
+                    Text("Practice Again")
+                }
             }
         }
-        .navigationBarHidden(true)
+        .navigationBarTitle(Text(name), displayMode: .inline)
     }
 }
