@@ -15,6 +15,7 @@ class WordData: ObservableObject {
         Word(word: "する", defintion: "to do"),
         Word(word: "食べる", defintion: "to eat")
     ]
+    
     private var index: Int = 0{
         didSet {
             self.word = current.word
