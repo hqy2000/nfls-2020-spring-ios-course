@@ -76,5 +76,6 @@ struct CardView: View {
             }
         }
         .navigationBarTitle(Text(card.name), displayMode: .inline)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
